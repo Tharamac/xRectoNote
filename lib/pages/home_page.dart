@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_rectonote/bloc/project_list_cubit.dart';
@@ -45,7 +46,21 @@ class _HomePageState extends State<HomePage> {
         );
       })),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () async{
+          FilePickerResult result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['mid']
+          );
+          if(result != null) {
+            PlatformFile file = result.files.first;
+   
+              print(file.name);
+              print(file.bytes);
+              print(file.size);
+              print(file.extension);
+              print(file.path);
+            }
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
