@@ -1,10 +1,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:x_rectonote/bloc/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/project_entity.dart';
 import 'package:x_rectonote/widgets/project_item.dart';
+
+import '../config/colors_theme.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -45,25 +48,39 @@ class _HomePageState extends State<HomePage> {
                           },
         );
       })),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          FilePickerResult result = await FilePicker.platform.pickFiles(
-            type: FileType.custom,
-            allowedExtensions: ['mid']
-          );
-          if(result != null) {
-            PlatformFile file = result.files.first;
-   
-              print(file.name);
-              print(file.bytes);
-              print(file.size);
-              print(file.extension);
-              print(file.path);
-            }
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.event_add,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.queue_music),
+            label: "Create lyrics from MIDI",
+            labelStyle: TextStyle(color: Colors.black),
+            backgroundColor: RectoNoteColors.speedDialBackgorund,
+            onTap: () async{
+            FilePickerResult result = await FilePicker.platform.pickFiles(
+              type: FileType.custom,
+              allowedExtensions: ['mid']
+            );
+            if(result != null) {
+              PlatformFile file = result.files.first;
+    
+                print(file.name);
+                print(file.bytes);
+                print(file.size);
+                print(file.extension);
+                print(file.path);
+              }
         },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+          )
+        ],
+      )
+      
+      
+      // FloatingActionButton(
+      //   onPressed: 
+      //   tooltip: 'Increment',
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 }
