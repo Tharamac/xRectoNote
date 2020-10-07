@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:x_rectonote/bloc/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
+import 'package:x_rectonote/project_entity.dart';
+import 'package:x_rectonote/widgets/project_item.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,20 +33,18 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: RectoNoteColors.appBarColor,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+      body: Center(child: BlocBuilder<ProjectListCubit, List<SongProject>>(
+          builder: (context, state) {
+        return ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: state.length,
+          itemBuilder: (BuildContext context, int i) {
+            return ProjectItemCard(
+              songName: state[i].songName,
+            );
+          },
+        );
+      })),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
