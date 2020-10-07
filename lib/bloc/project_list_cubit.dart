@@ -4,7 +4,7 @@ import 'package:x_rectonote/project_entity.dart';
 class ProjectListCubit extends Cubit<List<SongProject>> {
   ProjectListCubit()
       : super([
-          SongProject(id: 1, songName: "New"),
-          SongProject(id: 2, songName: "Blah3x")
+          SongProject(id: 0, songName: "New"),
+          SongProject(id: 1, songName: "Blah3x")
         ]);
 }

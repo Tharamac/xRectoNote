@@ -8,13 +8,13 @@ class RectoNoteColors {
   static const Color colorBackground = Color(0xFF424242);
 
   static const projectColors = [
-    Color(0xFFDF008c), //pink
+    Color(0xFFDD008c), //pink
     Color(0xFF0076cd), //blue
     Color(0xFF01706c), //teal
     Color(0xFF007a41), //green
     Color(0xFFFF7600), //orange
     Color(0xFF992e9a), //purple
     Color(0xFFBE0423), //red
-    Color(0xFF707070), //light gray
+     //light gray
   ];
 }

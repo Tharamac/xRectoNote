@@ -11,13 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +28,24 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(child: BlocBuilder<ProjectListCubit, List<SongProject>>(
           builder: (context, state) {
-        return ListView.builder(
+        return ListView.separated(
           scrollDirection: Axis.vertical,
           itemCount: state.length,
+          padding: EdgeInsets.all(10),
           itemBuilder: (BuildContext context, int i) {
             return ProjectItemCard(
+              id: state[i].id,
               songName: state[i].songName,
+              displayColor: state[i].color,
             );
           },
+          separatorBuilder:  (BuildContext context, int index) {
+                          return SizedBox(height: 10);
+                          },
         );
       })),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: null,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),

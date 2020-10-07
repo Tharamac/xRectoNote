@@ -7,6 +7,11 @@ import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/config/routes.dart';
 import 'package:x_rectonote/pages/home_page.dart';
 
+import 'config/colors_theme.dart';
+import 'config/routes.dart';
+import 'pages/lyrics_data.dart';
+import 'pages/lyrics_data.dart';
+
 void main() {
   Bloc.observer = ProjectListObserver();
   runApp(MyApp());
@@ -20,10 +25,11 @@ class MyApp extends StatelessWidget {
     child: MaterialApp(
       title: 'xRectoNote',
       theme: ThemeData(
-        fontFamily: "Josefin Sans",
+        fontFamily: "JosefinSans",
         brightness: Brightness.dark,
         backgroundColor: RectoNoteColors.colorBackground,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        hintColor: RectoNoteColors.colorPrimaryDark,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
             foregroundColor: RectoNoteColors.colorPrimaryDark,
             backgroundColor: RectoNoteColors.colorPrimary),
@@ -34,8 +40,16 @@ class MyApp extends StatelessWidget {
         //AppRoutes.editScorePage: (context) => EditScorePage()
       },
       onGenerateRoute: _regRoutesWithParams,
-    );,)
+      ),
+    );
   }
 }
 
-Route _regRoutesWithParams(RouteSettings settings) {}
+Route _regRoutesWithParams(RouteSettings settings) {
+  if(settings.name == AppRoutes.lyricsDataPage){
+    return MaterialPageRoute(builder: (context){
+      LyricsDataParam param = settings.arguments;
+      return LyricsDataPage(param.selectedDataIdx);
+    });
+  }
+}

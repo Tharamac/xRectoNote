@@ -27,6 +27,7 @@ dependencies:
   path:
   bloc: ^6.0.0
   flutter_bloc: ^6.0.0
+  file_picker: ^2.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -65,12 +66,17 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Josefin Sans
+    - family: JosefinSans
       fonts:
-        - asset: assets/fonts/JosefinSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/JosefinSans-BoldItalic.ttf
-          weight: 700
+        - asset: assets/fonts/JosefinSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/JosefinSans-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/JosefinSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/JosefinSans-LightItalic.ttf
+          weight: 300
           style: italic
         - asset: assets/fonts/JosefinSans-Regular.ttf
           weight: 400
@@ -87,6 +93,13 @@ flutter:
         - asset: assets/fonts/JosefinSans-SemiBoldItalic.ttf
           weight: 600
           style: italic
+        - asset: assets/fonts/JosefinSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/JosefinSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        
+        
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
