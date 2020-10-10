@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
+import 'package:x_rectonote/config/routes.dart';
+import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
 
 import '../bloc/project_list_cubit.dart';
 import '../config/colors_theme.dart';
@@ -25,6 +28,26 @@ class LyricsDataPage extends StatefulWidget {
 
 class _LyricsDataPageState extends State<LyricsDataPage> {
   TextEditingController _noteController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +98,9 @@ class _LyricsDataPageState extends State<LyricsDataPage> {
                               color: RectoNoteColors.colorPrimary,
                               fontSize: 20,
                               fontWeight: FontWeight.w600)),
-                      onPressed: null,
+                      onPressed: () => Navigator.of(context).pushNamed(
+                          AppRoutes.pianoRollMapperPage,
+                          arguments: widget.selectedDataIdx),
                     )
                   ],
                 ),

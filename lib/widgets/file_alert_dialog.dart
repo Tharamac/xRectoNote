@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 
-class ShowFileAlertDialog extends StatelessWidget {
+class ShowFileAlertDialog extends StatefulWidget {
   final String fileName;
-  final TextEditingController _controller = TextEditingController();
+
   ShowFileAlertDialog(this.fileName);
+  @override
+  _ShowFileAlertDialogState createState() => _ShowFileAlertDialogState();
+}
+
+class _ShowFileAlertDialogState extends State<ShowFileAlertDialog> {
+  final TextEditingController _controller = TextEditingController();
+  bool _validate = false;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -30,7 +38,7 @@ class ShowFileAlertDialog extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    fileName,
+                    widget.fileName,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
@@ -43,8 +51,10 @@ class ShowFileAlertDialog extends StatelessWidget {
               maxLength: 16,
               controller: _controller,
               decoration: InputDecoration(
-                  hintText: "Enter your song name",
-                  hintStyle: TextStyle(color: Color(0x88FFFFFF))),
+                hintText: "Enter your song name",
+                hintStyle: TextStyle(color: Color(0x88FFFFFF)),
+                errorText: _validate ? "Value cannot be empty." : null,
+              ),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -54,18 +64,22 @@ class ShowFileAlertDialog extends StatelessWidget {
       ),
       actions: [
         FlatButton(
-          child: Text("OK",
-              style: TextStyle(
-                color: RectoNoteColors.colorPrimary,
-              )),
-          onPressed: () => Navigator.pop(context, "OK"),
-        ),
+            child: Text("OK",
+                style: TextStyle(
+                  color: RectoNoteColors.colorPrimary,
+                )),
+            onPressed: () {
+              setState(() {
+                _controller.text.isEmpty ? _validate = true : _validate = false;
+              });
+              if (_validate == false) Navigator.pop(context, "OK");
+            }),
         FlatButton(
           child: Text("CANCEL",
               style: TextStyle(
                 color: RectoNoteColors.colorPrimary,
               )),
-          onPressed: () => Navigator.pop(context, "Cancel"),
+          onPressed: () => Navigator.pop(context, "CANCEL"),
         )
       ],
     );

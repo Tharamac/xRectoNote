@@ -1,10 +1,12 @@
 import 'package:animate_icons/animate_icons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:x_rectonote/bloc/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
+import 'package:x_rectonote/config/routes.dart';
 import 'package:x_rectonote/project_entity.dart';
 import 'package:x_rectonote/widgets/file_alert_dialog.dart';
 import 'package:x_rectonote/widgets/project_item.dart';
@@ -17,6 +19,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,8 +87,13 @@ class _HomePageState extends State<HomePage> {
                   String response = await showDialog<String>(
                       context: context,
                       builder: (BuildContext context) =>
-                          ShowFileAlertDialog(file.name).build(context));
+                          ShowFileAlertDialog(file.name));
                   print(response);
+                  if (response == "OK") {
+                    Navigator.of(context).pushNamed(
+                        AppRoutes.pianoRollMapperPage,
+                        arguments: file.name);
+                  }
                 }
               },
             )
