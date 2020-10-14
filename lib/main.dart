@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: missing_return
 Route _regRoutesWithParams(RouteSettings settings) {
   if (settings.name == AppRoutes.lyricsDataPage) {
     return MaterialPageRoute(builder: (context) {
@@ -55,9 +56,14 @@ Route _regRoutesWithParams(RouteSettings settings) {
       return LyricsDataPage(param.selectedDataIdx);
     });
   } else if (settings.name == AppRoutes.pianoRollMapperPage) {
+    // ignore: missing_return
     return MaterialPageRoute(builder: (context) {
       var param = settings.arguments;
-      return PianoRollLyricsMapperPage(param);
+      if (param is PianoRollLyricsMapperParam) {
+        return PianoRollLyricsMapperPage.addNew(param.songName, param.midiPath);
+      } else if (param is int) {
+        return PianoRollLyricsMapperPage(param);
+      }
     });
   }
 }

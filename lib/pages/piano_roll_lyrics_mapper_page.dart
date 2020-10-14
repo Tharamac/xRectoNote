@@ -1,34 +1,41 @@
+import 'dart:io';
+
+import 'package:dart_midi/dart_midi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:x_rectonote/bloc/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
+import 'package:x_rectonote/midi_sequence.dart';
 import 'package:x_rectonote/project_entity.dart';
 
 class PianoRollLyricsMapperParam {
-  final param;
-  PianoRollLyricsMapperParam(this.param);
+  final String songName;
+  final String midiPath;
+  PianoRollLyricsMapperParam(this.songName, this.midiPath);
 }
 
 class PianoRollLyricsMapperPage extends StatefulWidget {
   final param;
-  PianoRollLyricsMapperPage(this.param);
+  String midiPath;
+  bool isAddNew;
+  MidiSequence midi;
+  PianoRollLyricsMapperPage(this.param) {
+    isAddNew = false;
+  }
+  PianoRollLyricsMapperPage.addNew(this.param, this.midiPath) {
+    isAddNew = true;
+    midi = MidiSequence(midiPath);
+  }
   @override
   _PianoRollLyricsMapperPageState createState() =>
       _PianoRollLyricsMapperPageState();
 }
 
 class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
-  bool _isAddNew = true;
-
   @override
   void initState() {
     super.initState();
-    if (widget.param is int) {
-      _isAddNew = false;
-    } else if (widget.param is String) {
-      _isAddNew = true;
-    }
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -53,11 +60,9 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
       return Scaffold(
         appBar: AppBar(
             title: Text(
-              _isAddNew
-                  ? widget.param
-                  : state[widget.param].songName.replaceAll(".mid", ""),
+              widget.isAddNew ? widget.param : state[widget.param].songName,
               style: TextStyle(
-                  color: RectoNoteColors.colorPrimary,
+                  color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
@@ -72,6 +77,18 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
                     ),
                   ))
             ]),
+        body: SafeArea(
+            child: CustomScrollView(
+          slivers: [
+            Row(
+              children: [
+                SliverGrid.count(
+                  crossAxisCount: 1,
+                )
+              ],
+            )
+          ],
+        )),
       );
     });
   }

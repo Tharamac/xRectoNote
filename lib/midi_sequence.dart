@@ -3,15 +3,21 @@ import 'dart:io';
 import 'package:dart_midi/dart_midi.dart';
 
 class MidiSequence {
-  final File midiFile;
-  final String fileName;
-  MidiFile parseMidi;
-  MidiSequence({this.fileName, this.midiFile}) {
-    var parser = MidiParser();
-    parseMidi = parser.parseMidiFromFile(midiFile);
+  MidiFile midi;
+  final String midiPath;
+  List noteSequence;
+
+  MidiSequence(this.midiPath) {
+    this.midi = MidiParser().parseMidiFromFile(File(midiPath));
+
+    if (midi.header.format == 0)
+      noteSequence = midi.tracks[0];
+    else if (midi.header.format == 1) {
+      noteSequence = midi.tracks[1];
+    }
   }
   @override
   String toString() {
-    return parseMidi.tracks.toString();
+    return midi.tracks.toString();
   }
 }

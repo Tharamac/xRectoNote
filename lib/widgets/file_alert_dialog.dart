@@ -72,7 +72,8 @@ class _ShowFileAlertDialogState extends State<ShowFileAlertDialog> {
               setState(() {
                 _controller.text.isEmpty ? _validate = true : _validate = false;
               });
-              if (_validate == false) Navigator.pop(context, "OK");
+              if (_validate == false)
+                Navigator.pop(context, "OK${_controller.text}");
             }),
         FlatButton(
           child: Text("CANCEL",

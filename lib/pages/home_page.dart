@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_icons/animate_icons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:x_rectonote/bloc/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/config/routes.dart';
+import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
 import 'package:x_rectonote/project_entity.dart';
 import 'package:x_rectonote/widgets/file_alert_dialog.dart';
 import 'package:x_rectonote/widgets/project_item.dart';
@@ -89,10 +92,12 @@ class _HomePageState extends State<HomePage> {
                       builder: (BuildContext context) =>
                           ShowFileAlertDialog(file.name));
                   print(response);
-                  if (response == "OK") {
+                  if (response != "CANCEL") {
                     Navigator.of(context).pushNamed(
                         AppRoutes.pianoRollMapperPage,
-                        arguments: file.name);
+                        arguments: PianoRollLyricsMapperParam(
+                            response.replaceFirst("OK", ""),
+                            result.files.single.path));
                   }
                 }
               },
