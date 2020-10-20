@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:x_rectonote/bloc/project_list_cubit.dart';
+import 'package:x_rectonote/blocs/project_list/project_list_cubit.dart';
+
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/config/routes.dart';
 import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
@@ -26,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
     ]);
   }
