@@ -10,6 +10,7 @@ import 'package:x_rectonote/midi_sequence.dart';
 import 'package:x_rectonote/project_entity.dart';
 import 'package:x_rectonote/widgets/piano_roll_view.dart';
 import 'package:x_rectonote/widgets/piano_view.dart';
+import 'package:x_rectonote/widgets/track_unit.dart';
 
 class PianoRollLyricsMapperParam {
   final String songName;
@@ -35,7 +36,8 @@ class PianoRollLyricsMapperPage extends StatefulWidget {
 }
 
 class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
-  final _pianoRollController = ScrollController(initialScrollOffset: 24.0 * 48.5);
+  final _pianoRollController =
+      ScrollController(initialScrollOffset: 24.0 * 48.5);
   @override
   void initState() {
     super.initState();
@@ -61,43 +63,42 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
     return BlocBuilder<ProjectListCubit, List<SongProject>>(
         builder: (context, state) {
       return Scaffold(
-        appBar: AppBar(
-            title: Text(
-              widget.isAddNew ? widget.param : state[widget.param].songName,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            actions: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: null,
-                    child: Icon(
-                      Icons.done,
-                      size: 26.0,
-                    ),
-                  ))
-            ]),
-        body: SafeArea(
-            child: SingleChildScrollView(
-              controller: _pianoRollController,
-              child: Row(
-                children: [
-                  PianoView(9),
-                  Expanded(flex: 35,
-                  child: PianoRollGrid(9))
-                  
-                ],
-
+          appBar: AppBar(
+              title: Text(
+                widget.isAddNew ? widget.param : state[widget.param].songName,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
-            )
-              
-               
-        
-        )
-      );
+              actions: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: GestureDetector(
+                      onTap: null,
+                      child: Icon(
+                        Icons.done,
+                        size: 26.0,
+                      ),
+                    ))
+              ]),
+          body: SafeArea(
+              child: SingleChildScrollView(
+            controller: _pianoRollController,
+            child: Row(
+              children: [
+                PianoView(9),
+                Expanded(
+                  flex: 35,
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Stack(children: [
+                        PianoRollGrid(9, 24, 60, 64),
+                      ])),
+                )
+              ],
+            ),
+          )));
     });
   }
 }
