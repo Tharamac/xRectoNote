@@ -7,4 +7,8 @@ class ProjectListCubit extends Cubit<List<SongProject>> {
           SongProject(id: 0, songName: "New"),
           SongProject(id: 1, songName: "Blah3x")
         ]);
+
+  void newSongProject(SongProject s) {
+    emit(state.followedBy([s]).toList());
+  }
 }
