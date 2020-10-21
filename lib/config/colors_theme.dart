@@ -7,6 +7,8 @@ class RectoNoteColors {
   static const Color colorAccent = Color(0xFF617500);
   static const Color colorBackground = Color(0xFF424242);
   static const Color speedDialBackgorund = Color(0xFFedff8a);
+  static const Color highlightedPrimary = Color(0xFF00c3ff);
+  static const Color highlightedBorder = Color(0xFF25718a);
 
   static const projectColors = [
     Color(0xFFDD008c), //pink
