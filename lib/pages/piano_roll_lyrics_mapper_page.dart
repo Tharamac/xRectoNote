@@ -21,18 +21,20 @@ class PianoRollLyricsMapperParam {
 
 class PianoRollLyricsMapperPage extends StatefulWidget {
   final param;
-  String midiPath;
+  final String midiPath;
   bool isAddNew;
   List<NoteSequence> midi;
+  MidiSequence midiSequence;
   final int octaveSize = 9;
   final double gridHeight = 24;
   final double gridWidth = 40;
-  PianoRollLyricsMapperPage(this.param) {
+  PianoRollLyricsMapperPage(this.param, [this.midiPath]) {
     isAddNew = false;
   }
   PianoRollLyricsMapperPage.addNew(this.param, this.midiPath) {
     isAddNew = true;
-    midi = MidiSequence(midiPath).decodeMidiEvent();
+    midiSequence = MidiSequence(midiPath);
+    midi = midiSequence.decodeMidiEvent();
   }
   @override
   _PianoRollLyricsMapperPageState createState() =>
@@ -40,11 +42,15 @@ class PianoRollLyricsMapperPage extends StatefulWidget {
 }
 
 class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
-  final _pianoRollController =
-      ScrollController(initialScrollOffset: 24.0 * 48.5);
+  var _pianoRollController;
   @override
   void initState() {
     super.initState();
+    _pianoRollController = ScrollController(
+        initialScrollOffset: ((widget.octaveSize * 12 - 1) -
+                (widget.midi[0].midiNoteNumber - 12)) *
+            widget.gridHeight);
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -99,8 +105,11 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
                               scrollDirection: Axis.horizontal,
                               child: Stack(
                                   children: <Widget>[
-                                PianoRollGrid(widget.octaveSize,
-                                    widget.gridHeight, widget.gridWidth, 64),
+                                PianoRollGrid(
+                                    widget.octaveSize,
+                                    widget.gridHeight,
+                                    widget.gridWidth,
+                                    widget.midiSequence.trackDuration * 8),
                               ]
                                       .followedBy(widget.midi.map((e) {
                                         int noteNumber =

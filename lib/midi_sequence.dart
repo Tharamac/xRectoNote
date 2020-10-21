@@ -30,17 +30,19 @@ class MidiSequence {
   List<NoteSequence> decodeMidiEvent() {
     int tickTime = 0; // unit in tick
     int pastDeltaTime = 0;
+    int i = 0;
     var out = List<NoteSequence>();
     noteSequence.forEach((event) {
       if (event is NoteOnEvent && event.velocity != 0) {
         out.add(NoteSequence(
             midiNoteNumber: event.noteNumber,
             startDuration: (tickTime + event.deltaTime) ~/ tickPerDuration));
+        tickTime += event.deltaTime;
       } else if (event is NoteOffEvent) {
         var whereNoteOn = out.firstWhere((e) =>
             e.isFinished == false && e.midiNoteNumber == event.noteNumber);
         if (event.deltaTime == 0) {
-          whereNoteOn.duration = pastDeltaTime;
+          whereNoteOn.duration = pastDeltaTime ~/ tickPerDuration;
         } else {
           whereNoteOn.duration = event.deltaTime ~/ tickPerDuration;
         }
@@ -48,8 +50,9 @@ class MidiSequence {
         pastDeltaTime = event.deltaTime;
         tickTime += event.deltaTime;
       }
+      i++;
     });
-    trackDuration = tickTime ~/ tickPerDuration;
+    trackDuration = (tickTime.toDouble() / (tickPerBeat * 4)).round();
     return out;
   }
 }
