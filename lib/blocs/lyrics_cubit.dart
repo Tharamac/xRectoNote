@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:x_rectonote/note_sequence.dart';
 import 'package:x_rectonote/project_entity.dart';
 
-class LyricsCubit extends Cubit<List<String>> {
-  LyricsCubit() : super([]);
+class NoteSequenceCubit extends Cubit<List<NoteSequence>> {
+  NoteSequenceCubit() : super([]);
 
-  void insertLyrics(int idx ,String lyric){
-    state.insert(idx, lyric);
-  }
+  void initList(List<NoteSequence> melodyEvents) => emit(List.of(melodyEvents));
 }

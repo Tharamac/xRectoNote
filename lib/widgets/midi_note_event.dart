@@ -10,10 +10,11 @@ class MidiNoteEventView extends StatefulWidget {
   final int duration; // 1 duratrion = sixteenth note
   final double gridHeight;
   final double gridWidth;
+  final int id;
 
   final String lyric; // unit in duration
 
-  MidiNoteEventView(this.gridHeight, this.gridWidth,
+  MidiNoteEventView(this.id, this.gridHeight, this.gridWidth,
       {this.duration, this.lyric = ""});
   @override
   _MidiNoteEventViewState createState() => _MidiNoteEventViewState();

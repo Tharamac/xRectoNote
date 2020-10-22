@@ -4,6 +4,7 @@ import 'package:dart_midi/dart_midi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:x_rectonote/blocs/lyrics_cubit.dart';
 import 'package:x_rectonote/blocs/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/midi_sequence.dart';
@@ -71,6 +72,7 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
 
   @override
   Widget build(BuildContext context) {
+    context.bloc<NoteSequenceCubit>().initList(widget.midi);
     return BlocBuilder<ProjectListCubit, List<SongProject>>(
         builder: (context, state) {
       return Scaffold(
@@ -112,7 +114,14 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
                                     widget.gridWidth,
                                     widget.midiSequence.trackDuration * 8),
                               ]
-                                      .followedBy(widget.midi.map((e) {
+                                      .followedBy(context
+                                          .bloc<NoteSequenceCubit>()
+                                          .state
+                                          .asMap()
+                                          .entries
+                                          .map((entry) {
+                                        int idx = entry.key;
+                                        var e = entry.value;
                                         int noteNumber =
                                             (widget.octaveSize * 12 - 1) -
                                                 (e.midiNoteNumber - 12);
@@ -122,6 +131,7 @@ class _PianoRollLyricsMapperPageState extends State<PianoRollLyricsMapperPage> {
                                               widget.gridWidth /
                                               2,
                                           child: MidiNoteEventView(
+                                            idx,
                                             widget.gridHeight,
                                             widget.gridWidth,
                                             duration: e.duration,

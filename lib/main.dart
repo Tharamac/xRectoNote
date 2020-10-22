@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProjectListCubit>(
           create: (BuildContext context) => ProjectListCubit(),
         ),
-        BlocProvider<LyricsCubit>(
-            create: (BuildContext context) => LyricsCubit())
+        BlocProvider<NoteSequenceCubit>(
+            create: (BuildContext context) => NoteSequenceCubit())
       ],
       child: MaterialApp(
         title: 'xRectoNote',
