@@ -4,7 +4,7 @@ import 'package:dart_midi/dart_midi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:x_rectonote/blocs/project_list/project_list_cubit.dart';
+import 'package:x_rectonote/blocs/project_list_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/midi_sequence.dart';
 import 'package:x_rectonote/note_sequence.dart';
