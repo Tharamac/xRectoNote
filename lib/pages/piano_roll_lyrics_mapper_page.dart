@@ -27,7 +27,7 @@ class PianoRollLyricsMapperPage extends StatefulWidget {
   MidiSequence midiSequence;
   final int octaveSize = 9;
   final double gridHeight = 24;
-  final double gridWidth = 40;
+  final double gridWidth = 50;
   PianoRollLyricsMapperPage(this.param, [this.midiPath]) {
     isAddNew = false;
   }
@@ -36,6 +36,7 @@ class PianoRollLyricsMapperPage extends StatefulWidget {
     midiSequence = MidiSequence(midiPath);
     midi = midiSequence.decodeMidiEvent();
   }
+
   @override
   _PianoRollLyricsMapperPageState createState() =>
       _PianoRollLyricsMapperPageState();
