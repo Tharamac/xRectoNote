@@ -10,14 +10,18 @@ import 'package:x_rectonote/blocs/project_list_cubit.dart';
 
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/config/routes.dart';
+import 'package:x_rectonote/model/storage.dart';
 import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
-import 'package:x_rectonote/project_entity.dart';
+import 'package:x_rectonote/model/project_entity.dart';
 import 'package:x_rectonote/widgets/file_alert_dialog.dart';
 import 'package:x_rectonote/widgets/project_item.dart';
 
 import '../config/colors_theme.dart';
 
 class HomePage extends StatefulWidget {
+  final SongProjectStorage storage;
+  HomePage(this.storage);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -26,6 +30,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    widget.storage.readSongProjectList().then(
+        (value) => {context.bloc<ProjectListCubit>().initProjectList(value)});
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -88,16 +95,22 @@ class _HomePageState extends State<HomePage> {
                 if (result != null) {
                   PlatformFile file = result.files.first;
                   String response = await showDialog<String>(
+                      barrierDismissible: false,
                       context: context,
                       builder: (BuildContext context) =>
                           ShowFileAlertDialog(file.name));
                   print(response);
                   if (response != "CANCEL") {
-                    Navigator.of(context).pushNamed(
-                        AppRoutes.pianoRollMapperPage,
-                        arguments: PianoRollLyricsMapperParam(
-                            response.replaceFirst("OK", ""),
-                            result.files.single.path));
+                    Navigator.of(context)
+                        .pushNamed(AppRoutes.pianoRollMapperPage,
+                            arguments: LyricsMapperAddNewParam(
+                                response.replaceFirst("OK", ""),
+                                result.files.single.path))
+                        .then((value) {
+                      widget.storage.saveSongProjectList(
+                          context.bloc<ProjectListCubit>().state);
+                      print("saved");
+                    });
                   }
                 }
               },

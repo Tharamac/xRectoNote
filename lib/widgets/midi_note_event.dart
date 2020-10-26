@@ -1,9 +1,11 @@
-import 'package:bubble/bubble.dart';
 import 'package:dart_midi/dart_midi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 import 'package:speech_bubble/speech_bubble.dart';
+import 'package:x_rectonote/blocs/lyrics_cubit.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
+import 'package:x_rectonote/model/note_sequence.dart';
 import 'package:x_rectonote/widgets/lyric_edit_dialog.dart';
 
 class MidiNoteEventView extends StatefulWidget {
@@ -28,8 +30,6 @@ class _MidiNoteEventViewState extends State<MidiNoteEventView> {
   @override
   void initState() {
     super.initState();
-    strLyrics = widget.lyric;
-    _controller.text = strLyrics;
   }
 
   Offset _getPositions() {
@@ -60,13 +60,10 @@ class _MidiNoteEventViewState extends State<MidiNoteEventView> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        _controller.text =
+            context.bloc<NoteSequenceCubit>().state[widget.id].lyricWord;
         clickingColor();
-        var offset = _getPositions();
-
-        var appWidth = MediaQuery.of(context).size.width;
-        var appHeight = MediaQuery.of(context).size.height;
-        print("$offset   ${offset.dy / appHeight}");
-        String response = await showDialog<String>(
+        await showDialog<String>(
             context: context,
             barrierDismissible: true,
             barrierColor: Color(0x33FFFFFF),
@@ -88,19 +85,25 @@ class _MidiNoteEventViewState extends State<MidiNoteEventView> {
                                   maxLines: 1,
                                   maxLength: 8,
                                   controller: _controller,
+                                  style: TextStyle(height: 0.8),
                                   decoration: InputDecoration(
+                                      hintText: "Lyric",
+                                      hintStyle: TextStyle(
+                                          fontStyle: FontStyle.italic),
                                       counterStyle: TextStyle(
                                           fontSize: 10, color: Colors.white)))),
                           Flexible(
-                              child: FlatButton(
-                            child: Icon(
+                              child: IconButton(
+                            icon: Icon(
                               Icons.done,
                               color: RectoNoteColors.colorPrimary,
                             ),
                             onPressed: () {
-                              setState(() {
-                                strLyrics = _controller.text;
-                              });
+                              context
+                                  .bloc<NoteSequenceCubit>()
+                                  .state[widget.id]
+                                  .lyricWord = _controller.text;
+
                               Navigator.pop(context);
                             },
                           ))
@@ -129,7 +132,10 @@ class _MidiNoteEventViewState extends State<MidiNoteEventView> {
                     ? RectoNoteColors.highlightedBorder
                     : RectoNoteColors.colorAccent,
                 width: 2)),
-        child: Text(strLyrics, style: TextStyle(color: Colors.black)),
+        child: BlocBuilder<NoteSequenceCubit, List<NoteSequence>>(
+          builder: (context, state) => Text(state[widget.id].lyricWord,
+              style: TextStyle(color: Colors.black)),
+        ),
       ),
     );
   }

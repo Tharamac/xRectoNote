@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 import 'package:x_rectonote/blocs/project_list_cubit.dart';
 import 'package:x_rectonote/config/routes.dart';
+import 'package:x_rectonote/model/storage.dart';
 import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
 
 import '../config/colors_theme.dart';
-import '../config/colors_theme.dart';
-import '../config/colors_theme.dart';
-import '../config/colors_theme.dart';
-import '../config/colors_theme.dart';
-import '../config/colors_theme.dart';
-import '../project_entity.dart';
+import '../model/project_entity.dart';
 
 class LyricsDataParam {
   final int selectedDataIdx;
@@ -98,27 +93,50 @@ class _LyricsDataPageState extends State<LyricsDataPage> {
                               color: RectoNoteColors.colorPrimary,
                               fontSize: 20,
                               fontWeight: FontWeight.w600)),
-                      onPressed: () => Navigator.of(context).pushNamed(
-                          AppRoutes.pianoRollMapperPage,
-                          arguments: widget.selectedDataIdx),
+                      onPressed: () => Navigator.of(context)
+                          .pushNamed(AppRoutes.pianoRollMapperPage,
+                              arguments: LyricsMapperEditExistParam(
+                                  widget.selectedDataIdx,
+                                  state[widget.selectedDataIdx].songName,
+                                  state[widget.selectedDataIdx].noteEvents,
+                                  trackDuration: state[widget.selectedDataIdx]
+                                      .trackDuration))
+                          .then((value) {
+                        SongProjectStorage().saveSongProjectList(state);
+                        print("saved");
+                        Navigator.pop(context);
+                      }),
                     )
                   ],
                 ),
                 Expanded(
                     flex: 2,
                     child: Container(
-                      color: Colors.black12,
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        "Spicy jalapeno bacon ipsum dolor amet pork belly tenderloin meatball venison chicken, jowl ground round cow turducken ham hock andouille. Tail beef ribs shank corned beef kevin, flank swine frankfurter. Pork beef chuck leberkas flank, swine t-bone. Boudin venison sirloin swine capicola pig. Ribeye tenderloin meatball sirloin, sausage jerky rump pork chop chicken ham cupim frankfurter burgdoggen doner jowl.",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w300,
-                            height: 1.2),
-                        textAlign: TextAlign.justify,
-                      ),
-                    )),
+                        color: Colors.black12,
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Text(
+                                    (state[widget.selectedDataIdx].noteEvents ==
+                                            null)
+                                        ? "<No Lyrics Here>"
+                                        : state[widget.selectedDataIdx]
+                                            .lyricsToString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w300,
+                                        height: 1.2),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ),
+                              )
+                            ]))),
                 Padding(
                   padding: EdgeInsets.all(15),
                 ),

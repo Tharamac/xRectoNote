@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:x_rectonote/note_sequence.dart';
-import 'package:x_rectonote/project_entity.dart';
+import 'package:x_rectonote/model/note_sequence.dart';
+import 'package:x_rectonote/model/project_entity.dart';
 
 class NoteSequenceCubit extends Cubit<List<NoteSequence>> {
   NoteSequenceCubit() : super([]);

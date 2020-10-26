@@ -8,6 +8,7 @@ import 'package:x_rectonote/blocs/project_list_cubit.dart';
 import 'package:x_rectonote/blocs/bloc_observer.dart';
 import 'package:x_rectonote/config/colors_theme.dart';
 import 'package:x_rectonote/config/routes.dart';
+import 'package:x_rectonote/model/storage.dart';
 import 'package:x_rectonote/pages/home_page.dart';
 import 'package:x_rectonote/pages/piano_roll_lyrics_mapper_page.dart';
 
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          AppRoutes.home: (context) => HomePage(),
+          AppRoutes.home: (context) => HomePage(SongProjectStorage()),
           //AppRoutes.editScorePage: (context) => EditScorePage()
         },
         onGenerateRoute: _regRoutesWithParams,
@@ -67,10 +68,11 @@ Route _regRoutesWithParams(RouteSettings settings) {
     // ignore: missing_return
     return MaterialPageRoute(builder: (context) {
       var param = settings.arguments;
-      if (param is PianoRollLyricsMapperParam) {
+      if (param is LyricsMapperAddNewParam) {
         return PianoRollLyricsMapperPage.addNew(param.songName, param.midiPath);
-      } else if (param is int) {
-        return PianoRollLyricsMapperPage(param);
+      } else if (param is LyricsMapperEditExistParam) {
+        return PianoRollLyricsMapperPage(
+            param.idx, param.songName, param.midi, param.trackDuration);
       }
     });
   }

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_midi/dart_midi.dart';
-import 'package:x_rectonote/note_sequence.dart';
+import 'package:x_rectonote/model/note_sequence.dart';
 
 class MidiSequence {
   MidiFile midi;
