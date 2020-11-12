@@ -1,6 +1,6 @@
 # x_rectonote
 
-A new Flutter project.
+x_rectonote is a cross-platform piano roll lyrics mapper written in Flutter. This project's main challenge is to make piano roll UI.
 
 ## Getting Started
 
